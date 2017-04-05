@@ -1,0 +1,53 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+<html>
+<head>
+	<title>Facebook Search</title>
+	<meta charset="UTF-8">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">    
+	<link rel="stylesheet" href="style.css">
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+	<script src="main.js"></script>
+</head>
+<body>
+	<div class="container-fluid">
+		<div class="col-md-12" style="background-color: rgba(0,0,0,0.05)">
+			<form id="searchForm" method="get" role="form">
+				<div class="col-md-3" style="margin-top:12px">
+					<label class="label_text" style="color:#428bca;"><span style="vertical-align:middle">FB Search</span></label>
+				</div>
+				<div class="col-md-5" style="margin-top:8px;margin-bottom:8px">
+					<input type="text" class="form-control" id="keyword" placeholder="Keyword" required>
+				</div>
+				<div class="col-md-1" style="margin-top:8px;margin-bottom:8px">
+					<!--<a id="searchButton" class="btn btn-primary" style="margin-right: 5px;">-->
+					<button type="submit" class="btn btn-primary btn-block">
+						<span class="glyphicon glyphicon-search"></span>
+					</button>
+					<!--</a>-->
+				</div>
+				<div class="col-md-1" style="margin-top:8px;margin-bottom:8px">
+					<button type="javascript:clear()" class="btn btn-default btn-block">
+						Clear
+					</button>
+				</div>
+			</form>
+		</div>
+		<div class="col-md-12">
+			<ul class="col-md-12 nav nav-pills nav-justified" id="myTabs">
+			  <li role="presentation" class="active"><a href="javascript:tabpick(0)">Users</a></li>
+			  <li role="presentation"><a href="javascript:tabpick(1)">Pages</a></li>
+			  <li role="presentation"><a href="javascript:tabpick(2)">Events</a></li>
+			  <li role="presentation"><a href="javascript:tabpick(3)">Places</a></li>
+			  <li role="presentation"><a href="javascript:tabpick(4)">Groups</a></li>
+			  <li role="presentation"><a href="javascript:tabpick(5)">Favourites</a></li>
+			</ul>
+		</div>
+	</div>
+</body>
+</html>
