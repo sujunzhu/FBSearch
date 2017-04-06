@@ -1,6 +1,8 @@
 <?php
 	//$option = $_GET['keyword'];
 	echo $_GET['id'];
+	require_once __DIR__ . '/php-graph-sdk-5.0.0/src/Facebook/autoload.php';
+	date_default_timezone_set("America/Los_Angeles");
 	$fb = new Facebook\Facebook([
   				'app_id' => '1845517239059399',
   				'app_secret' => '051defe8fd89cd73081215ad5be3a94c',
