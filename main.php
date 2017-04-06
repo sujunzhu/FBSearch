@@ -1,6 +1,6 @@
 <?php
 	//$option = $_GET['keyword'];
-	echo $_GET['id'];
+	//echo $_GET['id'];
 	require_once __DIR__ . '/php-graph-sdk-5.0.0/src/Facebook/autoload.php';
 	date_default_timezone_set("America/Los_Angeles");
 	$fb = new Facebook\Facebook([
@@ -10,8 +10,12 @@
   				'default_graph_version' => 'v2.5',
 			]);
 	//$data = $fb->get('/'.$_GET['id'].'?fields=id,name,picture.width(700).height(700),albums.limit(5){name,photos.limit(2){name, picture}},posts.limit(5)');
-	$data = $fb->get('/'.$_GET['id'].'?fields=id,name,picture.width(700).height(700),albums.limit(5){name,photos.limit(2){name, picture}},posts.limit(5)');
+	//$data = $fb->get('/'.$_GET['id'].'?fields=id,name,picture.width(700).height(700),albums.limit(5){name,photos.limit(2){name, picture}},posts.limit(5)');
 	header('Content-type:application/json;charset=utf-8');
-	echo $data;
+	$response = $fb->get('/search?q=hello'.'&type=user'.'&fields=id,name,picture.width(700).height(700)');
+	//echo '/search?q=hello'.'&type=user'.'&fields=id,name,picture.width(700).height(700)\n';
+	$data = $response->getGraphEdge()->AsArray();
+	//$array = json_decode($response->getRawResponse(), true);
+	print_r($data);
 	//echo json_encode($data);
 ?>
