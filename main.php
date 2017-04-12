@@ -1,21 +1,36 @@
 <?php
-	//$option = $_GET['keyword'];
-	//echo $_GET['id'];
 	require_once __DIR__ . '/php-graph-sdk-5.0.0/src/Facebook/autoload.php';
 	date_default_timezone_set("America/Los_Angeles");
 	$fb = new Facebook\Facebook([
   				'app_id' => '1845517239059399',
-  				'app_secret' => '051defe8fd89cd73081215ad5be3a94c',
-  				'default_access_token' => 'EAAaOfPd2A8cBAGib6KzrQbX4sEZAngl8WnrFNwsv86nIjZCzsNr0MmvHpNlSrhXsxbZB7Kw6nzPZCsclLu3XsuNWLvZAEWIrY8IhC6SSRpZCASigLMoNR59JzWyuDsVJfP0pXVhcDbHrAT09EIik5lCHwji2BtI5sZD',
-  				'default_graph_version' => 'v2.5',
+  				'app_secret' => 'de8e7c04bbae8e7df7e456fe4137e145',
+  				'default_access_token' => 'EAAaOfPd2A8cBAJy8mp2HAX1j2vTWC7ryl3CpqNN4yWnfDGbmGZBEPOrPbqBrI4HdLX9aFRpOKoKPY5uvSoWHk78ZCdA9XKiHmG3NrFDYwrTFADUlm6lG2Mk9FydZCDIA0ViYsz0lPJoZA5vG32WINmBHlsGVXf0ZD',
+  				'default_graph_version' => 'v2.8',
 			]);
-	//$data = $fb->get('/'.$_GET['id'].'?fields=id,name,picture.width(700).height(700),albums.limit(5){name,photos.limit(2){name, picture}},posts.limit(5)');
-	//$data = $fb->get('/'.$_GET['id'].'?fields=id,name,picture.width(700).height(700),albums.limit(5){name,photos.limit(2){name, picture}},posts.limit(5)');
-	header('Content-type:application/json;charset=utf-8');
-	$response = $fb->get('/search?q=hello'.'&type=user'.'&fields=id,name,picture.width(700).height(700)');
-	//echo '/search?q=hello'.'&type=user'.'&fields=id,name,picture.width(700).height(700)\n';
-	$data = $response->getGraphEdge()->AsArray();
-	//$array = json_decode($response->getRawResponse(), true);
-	print_r($data);
-	//echo json_encode($data);
+	header('Content-type:application/json');
+	if(isset($_GET['id'])){
+		if($_GET['type']=="event"){
+			$response = $fb->get('/'.$_GET['id'].'?fields=id,name,picture.width(700).height(700),posts.limit(5)');
+			$data = $response->getGraphNode()->AsArray();
+		}else{
+			$response = $fb->get('/'.$_GET['id'].'?fields=id,name,picture.width(700).height(700),albums.limit(5){name,photos.limit(2){name, picture}},posts.limit(5)');
+			$data = $response->getGraphNode()->AsArray();
+		}
+	}
+	else if($_GET['type']=="user" || $_GET['type']=="page" || $_GET['type']=="event" || $_GET['type']=="group"){
+		$response = $fb->get('/search?q='.$_GET['keyword'].'&type='.$_GET['type'].'&fields=id,name,picture.width(700).height(700)');
+		//$data = $response->getGraphEdge()->AsArray();
+		$data = $response->getDecodedBody();
+		$count = 0;
+		/*foreach($users as $user){
+			$count = $count + 1;
+		}*/
+		//echo data['summary']['total_count']; 
+	}
+	else if($_GET['type']=="place"){
+		$response = $fb->get('/search?q='.$_GET['keyword'].'&type=place&fields=id,name,picture.width(700).height(700),place&center='.$_GET['center']);
+		//$data = $response->getGraphEdge()->AsArray();
+		$data = $response->getDecodedBody();
+	}
+	echo json_encode($data);
 ?>

@@ -6,33 +6,44 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <!-- Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">    
-	<link rel="stylesheet" href="static/style.css">
+	<link rel="stylesheet" href="style.css">
 	<!-- Optional theme -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 	<!-- Latest compiled and minified JavaScript -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
-	<script src="static/main.js"></script>
+	<script src='http://connect.facebook.net/en_US/sdk.js'></script>
+	<script src="main.js"></script>
+	<script>
+        //Init Facebook SDK
+		window.fbAsyncInit = function() {
+			FB.init({
+				appId: '1845517239059399',
+				xfbml: true,
+				version: 'v2.8'
+			});
+		};
+	</script>
 </head>
-<body>
-	<div class="container-fluid">
+<body onload="getLocation()">
+	<div class="container-fluid" ng-app="myApp" ng-controller="tabCtrl" ng-init="showResult=false;showDetail=false;nextD=true;previousD=true;next=null;previous=null;type_s='user';numTab=0;InitializeFunc()">
 		<div class="col-md-12" style="background-color: rgba(0,0,0,0.05)">
 			<form id="searchForm" method="get" role="form">
 				<div class="col-md-3" style="margin-top:12px">
 					<label class="label_text" style="color:#428bca;"><span style="vertical-align:middle">FB Search</span></label>
 				</div>
 				<div class="col-md-5" style="margin-top:8px;margin-bottom:8px">
-					<input type="text" class="form-control" id="keyword" placeholder="Keyword" required>
+					<input type="text" class="form-control" id="keyword" ng-model="keyword" placeholder="Keyword" required>
 				</div>
 				<div class="col-md-1" style="margin-top:8px;margin-bottom:8px">
 					<!--<a id="searchButton" class="btn btn-primary" style="margin-right: 5px;">-->
-					<button type="submit" class="btn btn-primary btn-block">
+					<button type="button" ng-click="SearchButtonFunc(type_s)" class="btn btn-primary btn-block">
 						<span class="glyphicon glyphicon-search"></span>
 					</button>
 					<!--</a>-->
 				</div>
 				<div class="col-md-1" style="margin-top:8px;margin-bottom:8px">
-					<button type="javascript:clear()" class="btn btn-default btn-block">
+					<button ng-click="ClearButtonFunc()" class="btn btn-default btn-block">
 						Clear
 					</button>
 				</div>
@@ -40,13 +51,166 @@
 		</div>
 		<div class="col-md-12">
 			<ul class="col-md-12 nav nav-pills nav-justified" id="myTabs">
-			  <li role="presentation" class="active"><a href="javascript:tabpick(0)">Users</a></li>
-			  <li role="presentation"><a href="javascript:tabpick(1)">Pages</a></li>
-			  <li role="presentation"><a href="javascript:tabpick(2)">Events</a></li>
-			  <li role="presentation"><a href="javascript:tabpick(3)">Places</a></li>
-			  <li role="presentation"><a href="javascript:tabpick(4)">Groups</a></li>
-			  <li role="presentation"><a href="javascript:tabpick(5)">Favourites</a></li>
+			  <li role="presentation" class="active"><a ng-click="type_s='user';SearchButtonFunc(type_s);numTab=0" href="javascript:tabpick(0)">Users</a></li>
+			  <li role="presentation"><a ng-click="type_s='page';SearchButtonFunc(type_s);numTab=1" href="javascript:tabpick(1)">Pages</a></li>
+			  <li role="presentation"><a ng-click="type_s='event';SearchButtonFunc(type_s);numTab=2" href="javascript:tabpick(2)">Events</a></li>
+			  <li role="presentation"><a ng-click="type_s='place';SearchButtonFunc(type_s);numTab=3" href="javascript:tabpick(3)">Places</a></li>
+			  <li role="presentation"><a ng-click="type_s='group';SearchButtonFunc(type_s);numTab=4" href="javascript:tabpick(4)">Groups</a></li>
+			  <li role="presentation"><a ng-click="type_s='fav';showResult=false;showDetail=false;showFavourites=true;numTab=5" href="javascript:tabpick(5)">Favourites</a></li>
 			</ul>
+		</div>
+		<div class="slideResult" ng-show="showResult==true" ng-animate="'fade'" ng-init="resultPB=false">
+			<div class="col-md-12" ng-show="resultPB">
+				<div class="progress" style="width:90%;margin-left:5%;margin-top:50px">
+					<div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%">
+						<span class="sr-only">50%</span>
+					</div>
+				</div>
+			</div>
+			<div ng-show="!resultPB">
+				<table class="col-md-12 table" style="margin-top:30px;text-align:middle;vertical-align:middle">
+					<tr>
+						<th class="col-md-1">#</th>
+						<th class="col-md-2">Profile photo</th>
+						<th class="col-md-5">Name</th>
+						<th class="col-md-2">Favorite</th>
+						<th class="col-md-2">Details</th>
+					</tr>
+					<tr ng-repeat="x in data" ng-init="$first?changeResultPBfirst():blank()" repeat-done>
+						<td class="col-md-1">{{$index+1}}</td>
+						<td class="col-md-2"><img ng-src="{{x.picture.data.url}}" width=30 height=30></td>
+						<td class="col-md-5">{{x.name}}</td>
+						<td class="col-md-2" ng-show="!contains(x.id)"><button type="button" class="btn btn-default" ng-click="$parent.FavouriteButtonFunc(x.id,x.picture.data.url,x.name,type_s)"><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span></button></td>
+						<td class="col-md-2" ng-show="contains(x.id)"><button type="button" class="btn btn-default" ng-click="$parent.UnfavouriteButtonFunc(x.id)"><span class="glyphicon glyphicon-star" style="color:yellow" aria-hidden="true"></span></button></td>
+						<td class="col-md-2"><button type="button" class="btn btn-default" ng-click="$parent.DetailButtonFunc(x.id,type_s)"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button></td>
+					</tr>
+				</table>
+			</div>
+			<div class="col-md-12 col-sm-12 text-center" ng-show="!resultPB">
+				<div class="col-md-offset-5 col-md-1 col-sm-6">
+					<button type="button" ng-click="UpdateButtonFunc(previous)" ng-hide="previous==null" class="btn btn-default btn-block">
+							Previous
+					</button>
+				</div>
+				<div class="col-md-1 col-sm-6">
+					<button type="button" ng-click="UpdateButtonFunc(next)" ng-hide="next==null" class="btn btn-default btn-block">
+							Next
+					</button>
+				</div>
+			</div>
+		</div>
+		<div ng-show="showDetail" class="detailSlideShow">
+			<div class="col-md-12 col-sm-12">
+				<div class="col-md-2 col-sm-3"><button ng-click="BackButtonFunc()" class="btn btn-default"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true">Back</span></button></div>
+				<div class="col-md-offset-8 col-md-1 col-sm-3" ng-show="!contains(detail.id)"><button type="button" class="btn btn-default" ng-click="FavouriteButtonFunc(detail.id,detail.picture.url,detail.name,type_s)"><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span></button></div>
+				<div class="col-md-offset-8 col-md-1 col-sm-3" ng-show="contains(detail.id)"><button type="button" class="btn btn-default" ng-click="UnfavouriteButtonFunc(detail.id)"><span class="glyphicon glyphicon-star" style="color:yellow" aria-hidden="true"></span></button></div>		
+				<div class="col-md-1 col-sm-3"><button type="button" ng-click="Post_fb(detail.picture.url,detail.name)" class="btn btn-default"><img src="facebook.png" width=15 height=15></button></div>
+			</div>
+			<div class="col-md-12" style="margin-top:30px" ng-init="detail">
+				<div class="col-md-6 col-sm-12" ng-init="albumPB=false">
+					<div class="panel panel-default">
+						<div ng-show="albumPB">
+							<div class="progress"  style="width:90%;margin-left:5%;margin-top:30px">
+								<div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%">
+									<span class="sr-only">50%</span>
+								</div>
+							</div>
+						</div>
+						<div ng-show="!albumPB">
+							<div class="panel-heading">
+								<h4>Albums</h4>
+							</div>
+							<div class="panel-body">
+								<div class="panel-group" id="accordion1" role="tablist" aria-multiselectable="true">
+									<div class="panel panel-default" ng-show="albums.length>0" ng-repeat="album in albums" repeat-done-album>
+										<div class="panel-heading" role="tab" id="headingAlbum{{$index}}">
+											<h4 class="panel-title">
+												<a role="button" data-toggle="collapse" data-parent="#accordion1" href="#collapseAlbum{{$index}}" aria-expanded="true" aria-controls="collapseAlbum{{$index}}">
+												  {{album.name}}
+												</a>
+											</h4>
+										</div>
+										<div id="collapseAlbum{{$index}}" ng-class="($index==0)?'panel-collapse collapse in':'panel-collapse collapse'" role="tabpanel" aria-labelledby="headingAlbum{{$index}}">
+											<div class="panel-body">
+												<div style="width:100%">
+													<img ng-src="http://graph.facebook.com/{{album.photos[0].id}}/picture?" width=100%>
+												</div>
+												<div style="width:100%">
+													<img ng-src="http://graph.facebook.com/{{album.photos[1].id}}/picture?" width=100%>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="well well-lg" ng-show="(albums.length==0)||(albums==null)">
+										<strong>No data found.</strong>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6 col-sm-12" ng-init="postPB=false">
+					<div class="panel panel-default">
+						<div ng-show="postPB">
+							<div class="progress" style="width:90%;margin-left:5%;margin-top:30px">
+								<div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%">
+									<span class="sr-only">50%</span>
+								</div>
+							</div>
+						</div>
+						<div ng-show="!postPB">
+							<div class="panel-heading">
+								<h4>Posts</h4>
+							</div>
+							<div class="panel-body">
+								<div class="panel-group" id="accordion2" role="tablist" aria-multiselectable="true">
+									<div class="panel panel-default" ng-show="posts.length>0" ng-repeat="post in posts" repeat-done-post>
+										<div id="collapsePost{{$index}}" class="panel-collapse collapse in" role="tabpanel">
+											<div class="panel-body" style="width:100%">
+												<div style="height:50px">
+													<div style="width:10%;float:left">
+														<img ng-src="{{detail.picture.url}}" width=40 height=40>{{detail.url}}
+													</div>
+													<div style="width:90%;float:left">
+														{{detail.name}}<br>
+														{{(post.created_time.date).slice(0,-7)}}
+													</div>
+												</div>
+												<div style="width=100%;margin-top:10px">
+													{{post.story+post.message}}
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="well well-lg" ng-show="(posts.length==0)||(posts==null)">
+										<strong>No data found.</strong>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div ng-show="showFavourites">
+			<table class="col-md-12 table" style="text-align:middle;vertical-align:middle">
+				<tr>
+					<th class="col-md-1">#</th>
+					<th class="col-md-2">Profile photo</th>
+					<th class="col-md-5">Name</th>
+					<th class="col-md-1">Type</th>
+					<th class="col-md-1">Favorite</th>
+					<th class="col-md-2">Details</th>
+				</tr>
+				<tr ng-repeat="fav in favs">
+					<td class="col-md-1">{{$index+1}}</td>
+					<td class="col-md-2"><img ng-src="{{fav.url}}" width=30 height=30></td>
+					<td class="col-md-5">{{fav.name}}</td>
+					<td class="col-md-2">{{fav.type}}</td>
+					<td class="col-md-2"><button type="button" class="btn btn-default" ng-click="UnfavouriteButtonFunc(fav.id)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></td>
+					<td class="col-md-2"><button type="button" class="btn btn-default" ng-click="DetailButtonFunc(fav.id,fav.type)"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button></td>
+				</tr>
+			</table>
 		</div>
 	</div>
 </body>

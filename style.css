@@ -1,0 +1,31 @@
+body{
+	font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+}
+
+#myTabs {
+    border-bottom: 1px solid #428bca;
+}
+
+.table > tbody > tr > td {
+     vertical-align: middle;
+}
+
+.well{
+	background-image:none !important;
+	background-color:#FCF8E3 !important;
+	color:#C9B184;
+}
+
+.detailSlideShow{
+	-webkit-transition: -webkit-transform 1s ease;
+	-moz-transition: -moz-transform 1s ease;
+	-o-transition: -o-transform 1s ease;
+	-ms-transition: -ms-transform 1s ease;
+	transition: all 1s ease;
+    -webkit-transition: width .35s ease-in-out; /* Safari 3.1 to 6.0 */
+    transition: width .35s ease-in-out;
+}
+
+.detailSlideShow.ng-hide{
+	
+}

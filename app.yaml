@@ -6,9 +6,18 @@ handlers:
   static_files: favicon.ico
   upload: favicon\.ico
 
-- url: /static
-  static_dir: static
+- url: /facebook\.png
+  static_files: facebook.png
+  
+- url: /favicon\.ico
+  static_files: favicon.ico
+  
+- url: /style\.css
+  static_files: style.css
 
+- url: /main\.js
+  static_files: main.js
+  
 - url: /main\.php
   script: main.php
   
