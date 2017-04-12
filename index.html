@@ -100,7 +100,7 @@
 			</div>
 		</div>
 		<div ng-show="showDetail" class="detailSlideShow">
-			<div class="col-md-12 col-sm-12">
+			<div class="col-md-12 col-sm-12" style="margin-top:20px">
 				<div class="col-md-2 col-sm-3"><button ng-click="BackButtonFunc()" class="btn btn-default"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true">Back</span></button></div>
 				<div class="col-md-offset-8 col-md-1 col-sm-3" ng-show="!contains(detail.id)"><button type="button" class="btn btn-default" ng-click="FavouriteButtonFunc(detail.id,detail.picture.url,detail.name,type_s)"><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span></button></div>
 				<div class="col-md-offset-8 col-md-1 col-sm-3" ng-show="contains(detail.id)"><button type="button" class="btn btn-default" ng-click="UnfavouriteButtonFunc(detail.id)"><span class="glyphicon glyphicon-star" style="color:yellow" aria-hidden="true"></span></button></div>		
