@@ -8,15 +8,15 @@ handlers:
 
 - url: /facebook\.png
   static_files: facebook.png
-  
-- url: /favicon\.ico
-  static_files: favicon.ico
+  upload: facebook\.png
   
 - url: /style\.css
   static_files: style.css
+  upload: style\.css
 
 - url: /main\.js
   static_files: main.js
+  upload: main\.js
   
 - url: /main\.php
   script: main.php
