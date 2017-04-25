@@ -18,7 +18,11 @@
 		}
 	}
 	else if($_GET['type']=="user" || $_GET['type']=="page" || $_GET['type']=="event" || $_GET['type']=="group"){
-		$response = $fb->get('/search?q='.$_GET['keyword'].'&type='.$_GET['type'].'&fields=id,name,picture.width(700).height(700)');
+		if(isset($_GET['limit'])){
+			$response = $fb->get('/search?q='.$_GET['keyword'].'&type='.$_GET['type'].'&fields=id,name,picture.width(700).height(700)&limit='.$_GET['limit']);
+		}else{
+			$response = $fb->get('/search?q='.$_GET['keyword'].'&type='.$_GET['type'].'&fields=id,name,picture.width(700).height(700)');
+		}
 		//$data = $response->getGraphEdge()->AsArray();
 		$data = $response->getDecodedBody();
 		$count = 0;

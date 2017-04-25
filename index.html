@@ -3,6 +3,7 @@
 <head>
 	<title>Facebook Search</title>
 	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <!-- Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">    
@@ -99,15 +100,18 @@
 				</div>
 			</div>
 		</div>
+		<div class="col-md-12">
+			<br>
+		</div>
 		<div ng-show="showDetail" class="detailSlideShow">
-			<div class="col-md-12 col-sm-12" style="margin-top:20px">
-				<div class="col-md-2 col-sm-3"><button ng-click="BackButtonFunc()" class="btn btn-default"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true">Back</span></button></div>
-				<div class="col-md-offset-8 col-md-1 col-sm-3" ng-show="!contains(detail.id)"><button type="button" class="btn btn-default" ng-click="FavouriteButtonFunc(detail.id,detail.picture.url,detail.name,type_s)"><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span></button></div>
-				<div class="col-md-offset-8 col-md-1 col-sm-3" ng-show="contains(detail.id)"><button type="button" class="btn btn-default" ng-click="UnfavouriteButtonFunc(detail.id)"><span class="glyphicon glyphicon-star" style="color:yellow" aria-hidden="true"></span></button></div>		
-				<div class="col-md-1 col-sm-3"><button type="button" ng-click="Post_fb(detail.picture.url,detail.name)" class="btn btn-default"><img src="facebook.png" width=15 height=15></button></div>
+			<div class="col-md-12">
+				<div class="col-md-2"><button ng-click="BackButtonFunc()" class="btn btn-default"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true">Back</span></button></div>
+				<div class="col-md-offset-8 col-md-1" ng-show="!contains(detail.id)"><button type="button" class="btn btn-default" ng-click="FavouriteButtonFunc(detail.id,detail.picture.url,detail.name,type_s)"><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span></button></div>
+				<div class="col-md-offset-8 col-md-1" ng-show="contains(detail.id)"><button type="button" class="btn btn-default" ng-click="UnfavouriteButtonFunc(detail.id)"><span class="glyphicon glyphicon-star" style="color:yellow" aria-hidden="true"></span></button></div>		
+				<div class="col-md-1"><button type="button" ng-click="Post_fb(detail.picture.url,detail.name)" class="btn btn-default"><img src="facebook.png" width=15 height=15></button></div>
 			</div>
 			<div class="col-md-12" style="margin-top:30px" ng-init="detail">
-				<div class="col-md-6 col-sm-12" ng-init="albumPB=false">
+				<div class="col-md-6" ng-init="albumPB=false">
 					<div class="panel panel-default">
 						<div ng-show="albumPB">
 							<div class="progress"  style="width:90%;margin-left:5%;margin-top:30px">
@@ -149,7 +153,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-md-6 col-sm-12" ng-init="postPB=false">
+				<div class="col-md-6" ng-init="postPB=false">
 					<div class="panel panel-default">
 						<div ng-show="postPB">
 							<div class="progress" style="width:90%;margin-left:5%;margin-top:30px">
