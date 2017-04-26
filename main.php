@@ -32,7 +32,11 @@
 		//echo data['summary']['total_count']; 
 	}
 	else if($_GET['type']=="place"){
-		$response = $fb->get('/search?q='.$_GET['keyword'].'&type=place&fields=id,name,picture.width(700).height(700),place&center='.$_GET['center']);
+		if(isset($_GET['limit'])){
+			$response = $fb->get('/search?q='.$_GET['keyword'].'&type=place&fields=id,name,picture.width(700).height(700),place&center='.$_GET['center']."&limit=".$_GET['limit']);
+		}else{
+			$response = $fb->get('/search?q='.$_GET['keyword'].'&type=place&fields=id,name,picture.width(700).height(700),place&center='.$_GET['center']);
+		}
 		//$data = $response->getGraphEdge()->AsArray();
 		$data = $response->getDecodedBody();
 	}
