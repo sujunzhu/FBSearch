@@ -4,7 +4,7 @@
 	$fb = new Facebook\Facebook([
   				'app_id' => '1845517239059399',
   				'app_secret' => 'de8e7c04bbae8e7df7e456fe4137e145',
-  				'default_access_token' => 'EAAaOfPd2A8cBAJYTbmwsXGrdtgCJe9LZB1QFig6Du6eKjUHlNlM9XPaVP9LNmkoSufAqnZBIpyKVlc03LfwLpF8W6XZALyZA5XQuPy1VtTIZBbgo8KaxmKWhZBnVvZBjtVJUE5MErYBV1NQFZAXr0epLQ4VIwZCG9Vi4ZD',
+  				'default_access_token' => 'EAAaOfPd2A8cBAJIhitOzZB3TJRRrULzz9eA7YjUaQkbUUdXwcZCOi8SeL2ZBaHHAu7lAFO1IZCHZAdUQcoEHmQLOoFUZAZAgzXxCLZBhmAZB3ZAHZCpYJdr2V8QdqqKjvalaAweBYE7d50TCokgyl4lW0pw5viNaQn8OdqZAsAgcMK52egZDZD',
   				'default_graph_version' => 'v2.8',
 			]);
 	header('Content-type:application/json');
@@ -29,7 +29,7 @@
 		/*foreach($users as $user){
 			$count = $count + 1;
 		}*/
-		//echo data['summary']['total_count']; 
+		//echo data['summary']['total_count'];
 	}
 	else if($_GET['type']=="place"){
 		if(isset($_GET['limit'])){
